@@ -64,11 +64,12 @@ typedef struct LINKQUEUE
 
 AdjMatrix* createGraph(AdjMatrix*);
 VertexNode* addVertex(VertexNode* vn, char vertex);
-int DFS(AdjMatrix *G, int i);
-int DFSTraverse(AdjMatrix *G, int start);
+int DFS(AdjMatrix *G, int i, int num);
+int DFSTraverse(AdjMatrix *G, int start, bool ismodified);
 void InitQueue(LinkQueue *q);
 void PushQueue(LinkQueue *q, int e);
 void DetQueue(LinkQueue *q, int &e);
 int QueueEmpty(LinkQueue *q);
 void BFSTraverse(AdjMatrix *G, int tag);
 void FindVertex(AdjMatrix* G, char key);
+void ifAcross(AdjMatrix* G);

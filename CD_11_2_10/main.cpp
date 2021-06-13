@@ -12,14 +12,34 @@ int main() {
     G = createGraph(G);
     printf("\n");
     printf("根据起始点下标做深度优先遍历\n");
-    int a = DFSTraverse(G, 2);
+    int a = DFSTraverse(G, 2, true);
     printf("\n");
     printf("根据起始点下标做广度优先遍历\n");
-    BFSTraverse(G, 4);
+    BFSTraverse(G, 0);
     printf("\n");
-    FindVertex(G,'g');
+    char x;
+    printf("请输入节点名称:");
+    scanf("%c",&x);
+    FindVertex(G, x);
+    printf("\n");
+    ifAcross(G);
 
     return 0;
+}
+
+//利用DFS判断图是否连通
+void ifAcross(AdjMatrix* G) {
+    int end = 1;
+    for(int i = 0; i < G->e; i++)
+    {
+        printf("\n");
+        end = DFSTraverse(G, i, false);
+        if (end)
+        {
+            return;
+        }
+        
+    }
 }
 
 AdjMatrix* createGraph(AdjMatrix* G) {
@@ -191,36 +211,59 @@ VertexNode* addVertex(VertexNode* vn, char vertex) {
 
 }
 //邻接表的深度优先搜索
-int DFS(AdjMatrix *G, int i)
+int DFS(AdjMatrix *G, int i, int num)
 {
 	EdgeNode *p;
 	visited[i] = 1;
 	printf("%c->", G->adjlist[i].vertex);
+    num++;
 	p = G->adjlist[i].edgenext;//让p指向边表的第一个结点
 	while (p)
 	{
 		if (!visited[p->tag])
 		{
-			DFS(G, p->tag);
+			num = DFS(G, p->tag, num);
 		}
 		p = p->next;
 	}
-    return 0;
+    return num;
 }
 
-int DFSTraverse(AdjMatrix *G, int start)
+int DFSTraverse(AdjMatrix *G, int start, bool ismodified)
 {
-	for (int i = 0; i < G->e; i++)
-	{
-		visited[i] = 0;//初始化标记数组为0
-	}
-	for (int i = 0; i < G->e; i++)
-	{
-		if (!visited[start])
-		{
-			DFS(G, start);
-		}
-	}
+    int num = 0;
+    if (ismodified)
+    {
+       	for (int i = 0; i < G->e; i++)
+        {
+            if (!visited[start])
+            {
+                DFS(G, start, num);
+            }
+        }
+    } else 
+    {
+        for (int i = 0; i < G->e; i++)
+        {
+            visited[i] = 0;//初始化标记数组为0
+        }
+        for (int i = 0; i < G->e; i++)
+        {
+            if (!visited[start])
+            {
+                num = DFS(G, start, num);
+                if (num < G->e)
+                {
+                    printf("我不是连通图哦");
+                    return 1;
+                }
+                
+            }
+            
+        }
+        printf("我是连通图哦");
+    }
+    
     return 0;
 }
 
@@ -317,17 +360,27 @@ void BFSTraverse(AdjMatrix *G, int tag)
 void FindVertex(AdjMatrix* G, char key)
 {
     VertexNode *p = G->adjlist;
-    EdgeNode *o = p->edgenext;
+    EdgeNode *pf = p->edgenext;
+    EdgeNode *ps;
 
     while (p->vertex != 0)
     {
         if(p->vertex == key)
         {
+            //顶点数减一
+            G->e--;
             //删除节点和相关信息先删除点
             for (int i = p->tag; G->adjlist[i].vertex != 0; i++)
             {
                 //数组前移
                 G->adjlist[i] = G->adjlist[i+1];
+                G->adjlist[i].tag = i;
+                //修改访问数组
+                for (int j = 0; j < G->e; j++)
+                {
+                    visited[j] = 0;//初始化标记数组为0
+                }
+                visited[i] = 1;
             }
             printf("已经成功删除节点%c,下标为%d\n", key, p->tag);
 
@@ -335,20 +388,67 @@ void FindVertex(AdjMatrix* G, char key)
             p = G->adjlist;
             while (p->vertex != 0)
             {
-                o=p->edgenext;
-                while (o)
+                //如果该顶点无边点
+                if(p->edgenext == NULL)
                 {
-                    if(o->adjvex == key)
+                    p++;
+                    continue;
+                }
+                pf=p->edgenext;
+                ps=pf->next;
+                //当第一个节点就是需要删除的节点时
+                if(pf->adjvex == key)
+                {
+                    pf->next = ps->next;
+                    printf("删除%c---->%c边\n", p->vertex, key);
+                    free(ps);
+                    p++;
+                    continue;
+                }
+                //当中间节点需要被删除时
+                while (ps != NULL)
+                {
+                    if(ps->adjvex == key)
                     {
-                        o--->next = o->next;
+                        pf->next = ps->next;
+                        printf("删除%c---->%c边\n", p->vertex, key);
+                        free(ps);
+                        break;
                     }
-                    o = o->next;
+                    pf = pf->next;
+                    ps = ps->next;
                 }
                 p++;
                 
             }
-            
+            //删除节点导致tag改变
+            p = G->adjlist;
+            VertexNode *v = p;
+            int tag = 0;
+            while (p->vertex != 0)
+            {
+                EdgeNode *o = p->edgenext;
+                while (o)
+                {
+                    v = G->adjlist;
+                    while (v)
+                    {
+                        if (v->vertex == o->adjvex)
+                        {
+                            o->tag = v->tag;
+                            v = p;
+                            break;
+                        }
+                        v++;
+                    }
+                    o=o->next;
+                }
+                tag++;
+                p++;
+            }
             //做DFS遍历
+
+            DFSTraverse(G, 0, true);
             return;
         }
         p++;
