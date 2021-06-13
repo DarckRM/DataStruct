@@ -47,7 +47,27 @@ typedef struct {
 
 }AdjMatrix;
 
+//为实现广度优先遍历 队列结构
+typedef struct Qnode
+{
+    int data;
+    Qnode* next;
+    
+}Qnode, *Qptr;
+
+typedef struct LINKQUEUE
+{
+    Qptr front;
+    Qptr rear;
+}LinkQueue;
+
+
 AdjMatrix* createGraph(AdjMatrix*);
 VertexNode* addVertex(VertexNode* vn, char vertex);
 int DFS(AdjMatrix *G, int i);
 int DFSTraverse(AdjMatrix *G, int start);
+void InitQueue(LinkQueue *q);
+void PushQueue(LinkQueue *q, int e);
+void DetQueue(LinkQueue *q, int &e);
+int QueueEmpty(LinkQueue *q);
+void BFSTraverse(AdjMatrix *G, int tag);

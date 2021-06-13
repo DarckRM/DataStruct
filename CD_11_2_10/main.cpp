@@ -10,8 +10,12 @@ int main() {
     G->e = 0;
     G->n = 0;
     G = createGraph(G);
-    //根据起始点下标做深度优先遍历
+    printf("\n");
+    printf("根据起始点下标做深度优先遍历\n");
     int a = DFSTraverse(G, 2);
+    printf("\n");
+    printf("根据起始点下标做广度优先遍历\n");
+    BFSTraverse(G, 4);
 
     return 0;
 }
@@ -216,4 +220,93 @@ int DFSTraverse(AdjMatrix *G, int start)
 		}
 	}
     return 0;
+}
+
+void InitQueue(LinkQueue *q) //队列初始化
+{
+	//定义头结点，队首队尾都指向头结点
+	Qptr firstnode = (Qptr)malloc(sizeof(Qnode));
+	q->front = q->rear = firstnode;
+	if (!q->front)
+	{
+		exit(0);
+	}
+	q->front->next = NULL;
+}
+//入队列
+void PushQueue(LinkQueue *q, int e)
+{
+	//在队尾插入元素
+	Qptr p = (Qptr)malloc(sizeof(Qnode));
+	if (!p)
+	{
+		exit(0);
+	}
+	p->data = e;
+	p->next = NULL;
+	q->rear->next = p;
+	q->rear = p;
+}
+//出队列
+void DetQueue(LinkQueue *q, int &e)
+{
+	//出队列在队首进行
+	if (q->front == q->rear)
+	{
+		printf("队列中无元素！\n");
+		exit(0);
+	}
+	Qptr p = q->front->next;
+	e = p->data;
+	q->front->next = p->next;
+	if (q->rear == p)
+	{
+		q->rear = q->front;
+	}
+	free(p);
+}
+//检验是否为空
+int QueueEmpty(LinkQueue *q)
+{
+	if (q->front == q->rear)
+		return 0;
+	else
+		return 1;
+}
+
+//广度优先遍历
+void BFSTraverse(AdjMatrix *G, int tag)
+{
+	int k;
+	LinkQueue Q;
+	EdgeNode *e;
+	InitQueue(&Q);
+	for (int i = 0; i < G->e; i++)
+	{
+		visited[i] = 0;//初始化标记数组
+	}
+	for (int i = 0; i < G->e; i++)
+	{
+		if (!visited[tag])
+		{
+			visited[tag] = 1;
+			printf("%c->", G->adjlist[tag].vertex);
+			PushQueue(&Q, tag);
+		}
+		while (QueueEmpty(&Q))
+		{
+			DetQueue(&Q, k);
+			e = G->adjlist[k].edgenext;
+			while (e)
+			{
+				if (!visited[e->tag])
+				{
+					visited[e->tag] = 1;
+					printf("%c->", G->adjlist[e->tag].vertex);
+					PushQueue(&Q, e->tag);
+				}
+				e = e->next;
+			}
+		}
+	}
 }
