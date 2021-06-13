@@ -16,6 +16,8 @@ int main() {
     printf("\n");
     printf("根据起始点下标做广度优先遍历\n");
     BFSTraverse(G, 4);
+    printf("\n");
+    FindVertex(G,'g');
 
     return 0;
 }
@@ -309,4 +311,48 @@ void BFSTraverse(AdjMatrix *G, int tag)
 			}
 		}
 	}
+}
+
+//查找顶点 判断是否存在 存在则删除顶点并做DFS遍历 不存在则输出结果
+void FindVertex(AdjMatrix* G, char key)
+{
+    VertexNode *p = G->adjlist;
+    EdgeNode *o = p->edgenext;
+
+    while (p->vertex != 0)
+    {
+        if(p->vertex == key)
+        {
+            //删除节点和相关信息先删除点
+            for (int i = p->tag; G->adjlist[i].vertex != 0; i++)
+            {
+                //数组前移
+                G->adjlist[i] = G->adjlist[i+1];
+            }
+            printf("已经成功删除节点%c,下标为%d\n", key, p->tag);
+
+            //重置指针 指向图的头节点
+            p = G->adjlist;
+            while (p->vertex != 0)
+            {
+                o=p->edgenext;
+                while (o)
+                {
+                    if(o->adjvex == key)
+                    {
+                        o--->next = o->next;
+                    }
+                    o = o->next;
+                }
+                p++;
+                
+            }
+            
+            //做DFS遍历
+            return;
+        }
+        p++;
+    }
+    printf("没有找到节点%c哦",key);
+    return;
 }

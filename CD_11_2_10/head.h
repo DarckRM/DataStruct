@@ -71,3 +71,4 @@ void PushQueue(LinkQueue *q, int e);
 void DetQueue(LinkQueue *q, int &e);
 int QueueEmpty(LinkQueue *q);
 void BFSTraverse(AdjMatrix *G, int tag);
+void FindVertex(AdjMatrix* G, char key);
