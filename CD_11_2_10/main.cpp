@@ -5,29 +5,29 @@
 
 int main() {
 
-    //åˆ›å»ºæ–°çš„é‚»æ¥è¡¨
+    //´´½¨ĞÂµÄÁÚ½Ó±í
     AdjMatrix *G = (AdjMatrix*)malloc(sizeof(AdjMatrix));
     G->e = 0;
     G->n = 0;
     G = createGraph(G);
     printf("\n");
-    printf("æ ¹æ®èµ·å§‹ç‚¹ä¸‹æ ‡åšæ·±åº¦ä¼˜å…ˆéå†\n");
-    int a = DFSTraverse(G, 2, true);
+    printf("¸ù¾İÆğÊ¼µãÏÂ±ê×öÉî¶ÈÓÅÏÈ±éÀú\n");
+    int a = DFSTraverse(G, 4, true);
     printf("\n");
-    printf("æ ¹æ®èµ·å§‹ç‚¹ä¸‹æ ‡åšå¹¿åº¦ä¼˜å…ˆéå†\n");
+    printf("¸ù¾İÆğÊ¼µãÏÂ±ê×ö¹ã¶ÈÓÅÏÈ±éÀú\n");
     BFSTraverse(G, 0);
     printf("\n");
     char x;
-    printf("è¯·è¾“å…¥èŠ‚ç‚¹åç§°:");
+    printf("ÇëÊäÈë½ÚµãÃû³Æ:");
     scanf("%c",&x);
     FindVertex(G, x);
     printf("\n");
     ifAcross(G);
-
+    scanf("");
     return 0;
 }
 
-//åˆ©ç”¨DFSåˆ¤æ–­å›¾æ˜¯å¦è¿é€š
+//ÀûÓÃDFSÅĞ¶ÏÍ¼ÊÇ·ñÁ¬Í¨
 void ifAcross(AdjMatrix* G) {
     int end = 1;
     for(int i = 0; i < G->e; i++)
@@ -44,9 +44,9 @@ void ifAcross(AdjMatrix* G) {
 
 AdjMatrix* createGraph(AdjMatrix* G) {
     
-    printf("ç¨‹åºå¯åŠ¨è¯»å–ç›®å½•ä¸‹graph.datæ–‡ä»¶ ç”Ÿæˆé‚»æ¥è¡¨\n");
+    printf("³ÌĞòÆô¶¯¶ÁÈ¡Ä¿Â¼ÏÂgraph.datÎÄ¼ş Éú³ÉÁÚ½Ó±í\n");
     VertexNode *vn = G->adjlist;
-    //å…ˆæŠŠGé‡Œçš„æ‰€æœ‰é¡¶ç‚¹ç½®ä¸º0ä¾¿äºåˆ¤æ–­
+    //ÏÈ°ÑGÀïµÄËùÓĞ¶¥µãÖÃÎª0±ãÓÚÅĞ¶Ï
     while (true)
     {        
         vn->vertex = 0;
@@ -57,7 +57,7 @@ AdjMatrix* createGraph(AdjMatrix* G) {
         }
     }
     vn = G->adjlist;
-    //æ‰“å¼€æ–‡ä»¶æµ å£°æ˜å­—ç¬¦æ•°ç»„åšç¼“å†²åŒº å£°æ˜æŒ‡é’ˆæ“ä½œç¼“å†²åŒº
+    //´ò¿ªÎÄ¼şÁ÷ ÉùÃ÷×Ö·ûÊı×é×ö»º³åÇø ÉùÃ÷Ö¸Õë²Ù×÷»º³åÇø
     FILE *fp = fopen("graph.dat", "r");
     char strLine[512], *buf;
 
@@ -66,26 +66,26 @@ AdjMatrix* createGraph(AdjMatrix* G) {
         fgets(strLine, 512, fp);
         buf = strLine;
         int i = 0;
-        //nodesä»£è¡¨å½“å‰é¡¶ç‚¹æœ‰å¤šå°‘ä¸ªè¾¹ç‚¹ï¼Œä¾¿äºåæœŸéå†è¾¹ç‚¹
+        //nodes´ú±íµ±Ç°¶¥µãÓĞ¶àÉÙ¸ö±ßµã£¬±ãÓÚºóÆÚ±éÀú±ßµã
         int nodes = 0;
         while (buf[i]!=']')
         {
-            //å½“è¯»å–åˆ°:æ—¶ å‰ä¸€ä¸ªå­—ç¬¦åˆ™ä¸ºé¡¶ç‚¹ æ·»åŠ è¿›é‚»æ¥è¡¨
+            //µ±¶ÁÈ¡µ½:Ê± Ç°Ò»¸ö×Ö·ûÔòÎª¶¥µã Ìí¼Ó½øÁÚ½Ó±í
             if (buf[i] == ':')
             {
                 vn = addVertex(vn, buf[i-1]);
-                //é¡¶ç‚¹æ•°åŠ 
+                //¶¥µãÊı¼Ó
                 G->e += 1;
                 i += 2;
                 continue;
             }
 
-            //å½“è¯»å–åˆ°-æ—¶ å‰ä¸€ä¸ªå­—ç¬¦åˆ™ä¸ºè¾¹ç‚¹
+            //µ±¶ÁÈ¡µ½-Ê± Ç°Ò»¸ö×Ö·ûÔòÎª±ßµã
             if (buf[i] == '-')
             {
-                //è¾¹åŠ 1
+                //±ß¼Ó1
                 G->n += 1;
-                //åˆ†é…å†…å­˜ç©ºé—´
+                //·ÖÅäÄÚ´æ¿Õ¼ä
                 EdgeNode *edgeNode = (EdgeNode*)malloc(sizeof(EdgeNode));
 
                 EdgeNode *p;
@@ -93,26 +93,26 @@ AdjMatrix* createGraph(AdjMatrix* G) {
 
                 int j = 0;
                 int value;
-                //ç¼“å†²åŒºvaluesç”¨æ¥å­˜æ”¾è¯»å–åˆ°çš„è¾¹ç‚¹çš„æƒå€¼
+                //»º³åÇøvaluesÓÃÀ´´æ·Å¶ÁÈ¡µ½µÄ±ßµãµÄÈ¨Öµ
                 char values[10] = {0};
-                //jä»£è¡¨è¯»å–åˆ°ç¬¬å‡ ä¸ªå­—ç¬¦
+                //j´ú±í¶ÁÈ¡µ½µÚ¼¸¸ö×Ö·û
                 if (j == 0)
                 {
                     edgeNode->adjvex = buf[i-1];
                 }
                                 
-                //å½“è¯»å–åˆ°,æ—¶ è·³å‡ºè¯»å–è¿™ä¸ªè¾¹ç‚¹çš„å¾ªç¯
+                //µ±¶ÁÈ¡µ½,Ê± Ìø³ö¶ÁÈ¡Õâ¸ö±ßµãµÄÑ­»·
                 while (buf[i]!=',')
                 {
-                    //è¯»å–åˆ°çš„-ä¹‹åçš„æ¯ä¸ªå­—ç¬¦è¿›å…¥ç¼“å†²åŒº
+                    //¶ÁÈ¡µ½µÄ-Ö®ºóµÄÃ¿¸ö×Ö·û½øÈë»º³åÇø
                     values[j] = buf[i+1];
-                    //å½“è¯»å–åˆ°,çš„å‰ä¸€ä¸ªå­—ç¬¦æ—¶ æŠŠvaluesç¼“å†²åŒºçš„å­—ç¬¦è½¬æˆintç±»å‹çš„value
+                    //µ±¶ÁÈ¡µ½,µÄÇ°Ò»¸ö×Ö·ûÊ± °Ñvalues»º³åÇøµÄ×Ö·û×ª³ÉintÀàĞÍµÄvalue
                     if (buf[i+1] == ',')
                     {
                         value = atoi(values);
-                        //printf("è¯»å–åˆ°çš„è¾¹ç‚¹%c,å®ƒçš„æƒå€¼%d\n", edgeNode->adjvex, value);
+                        //printf("¶ÁÈ¡µ½µÄ±ßµã%c,ËüµÄÈ¨Öµ%d\n", edgeNode->adjvex, value);
                         edgeNode->value = value;
-                        //å¤´æ’æ³•æ’å…¥æ–°èŠ‚ç‚¹
+                        //Í·²å·¨²åÈëĞÂ½Úµã
                         p->next = vn->edgenext;
                         vn->edgenext = p;
                         nodes += 1;
@@ -124,7 +124,7 @@ AdjMatrix* createGraph(AdjMatrix* G) {
                 }
 
             }
-            //ï¿½ï¿½Ç°ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ö®Ç°ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½nextï¿½ï¿½Î»NULL ï¿½ï¿½ï¿½ï¿½vnÖ¸ï¿½ï¿½ï¿½ï¿½ï¿½
+            //????§Ò????? ??????????????¦Â????next??¦ËNULL ????vn??????
             if (buf[i]=='*')
             {
                 EdgeNode *h = vn->edgenext;
@@ -154,7 +154,7 @@ AdjMatrix* createGraph(AdjMatrix* G) {
     
     VertexNode *p = G->adjlist;
     InOutInfo io[MaxVertices] = {NULL};
-    //éå†è¡¨ ä¸‹æ ‡èµ‹å€¼ è®¡ç®—å‡ºå…¥åº¦
+    //±éÀú±í ÏÂ±ê¸³Öµ ¼ÆËã³öÈë¶È
     int tag = 0;
     while (p->vertex != 0)
     {
@@ -196,7 +196,7 @@ AdjMatrix* createGraph(AdjMatrix* G) {
     tag = 0;
     while (io[tag].vertex != 0)
     {
-        printf("é¡¶ç‚¹%cçš„å…¥åº¦ä¸º:%d,å‡ºåº¦ä¸º:%d\n",io[tag].vertex,io[tag].in,io[tag].out);
+        printf("¶¥µã%cµÄÈë¶ÈÎª:%d,³ö¶ÈÎª:%d\n",io[tag].vertex,io[tag].in,io[tag].out);
         tag++;
     }
     
@@ -210,14 +210,14 @@ VertexNode* addVertex(VertexNode* vn, char vertex) {
     return vn;
 
 }
-//é‚»æ¥è¡¨çš„æ·±åº¦ä¼˜å…ˆæœç´¢
+//ÁÚ½Ó±íµÄÉî¶ÈÓÅÏÈËÑË÷
 int DFS(AdjMatrix *G, int i, int num)
 {
 	EdgeNode *p;
 	visited[i] = 1;
 	printf("%c->", G->adjlist[i].vertex);
     num++;
-	p = G->adjlist[i].edgenext;//è®©pæŒ‡å‘è¾¹è¡¨çš„ç¬¬ä¸€ä¸ªç»“ç‚¹
+	p = G->adjlist[i].edgenext;//ÈÃpÖ¸Ïò±ß±íµÄµÚÒ»¸ö½áµã
 	while (p)
 	{
 		if (!visited[p->tag])
@@ -245,7 +245,7 @@ int DFSTraverse(AdjMatrix *G, int start, bool ismodified)
     {
         for (int i = 0; i < G->e; i++)
         {
-            visited[i] = 0;//åˆå§‹åŒ–æ ‡è®°æ•°ç»„ä¸º0
+            visited[i] = 0;//³õÊ¼»¯±ê¼ÇÊı×éÎª0
         }
         for (int i = 0; i < G->e; i++)
         {
@@ -254,22 +254,22 @@ int DFSTraverse(AdjMatrix *G, int start, bool ismodified)
                 num = DFS(G, start, num);
                 if (num < G->e)
                 {
-                    printf("æˆ‘ä¸æ˜¯è¿é€šå›¾å“¦");
+                    printf("ÎÒ²»ÊÇÁ¬Í¨Í¼Å¶");
                     return 1;
                 }
                 
             }
             
         }
-        printf("æˆ‘æ˜¯è¿é€šå›¾å“¦");
+        printf("ÎÒÊÇÁ¬Í¨Í¼Å¶");
     }
     
     return 0;
 }
 
-void InitQueue(LinkQueue *q) //é˜Ÿåˆ—åˆå§‹åŒ–
+void InitQueue(LinkQueue *q) //¶ÓÁĞ³õÊ¼»¯
 {
-	//å®šä¹‰å¤´ç»“ç‚¹ï¼Œé˜Ÿé¦–é˜Ÿå°¾éƒ½æŒ‡å‘å¤´ç»“ç‚¹
+	//¶¨ÒåÍ·½áµã£¬¶ÓÊ×¶ÓÎ²¶¼Ö¸ÏòÍ·½áµã
 	Qptr firstnode = (Qptr)malloc(sizeof(Qnode));
 	q->front = q->rear = firstnode;
 	if (!q->front)
@@ -278,10 +278,10 @@ void InitQueue(LinkQueue *q) //é˜Ÿåˆ—åˆå§‹åŒ–
 	}
 	q->front->next = NULL;
 }
-//å…¥é˜Ÿåˆ—
+//Èë¶ÓÁĞ
 void PushQueue(LinkQueue *q, int e)
 {
-	//åœ¨é˜Ÿå°¾æ’å…¥å…ƒç´ 
+	//ÔÚ¶ÓÎ²²åÈëÔªËØ
 	Qptr p = (Qptr)malloc(sizeof(Qnode));
 	if (!p)
 	{
@@ -292,13 +292,13 @@ void PushQueue(LinkQueue *q, int e)
 	q->rear->next = p;
 	q->rear = p;
 }
-//å‡ºé˜Ÿåˆ—
+//³ö¶ÓÁĞ
 void DetQueue(LinkQueue *q, int &e)
 {
-	//å‡ºé˜Ÿåˆ—åœ¨é˜Ÿé¦–è¿›è¡Œ
+	//³ö¶ÓÁĞÔÚ¶ÓÊ×½øĞĞ
 	if (q->front == q->rear)
 	{
-		printf("é˜Ÿåˆ—ä¸­æ— å…ƒç´ ï¼\n");
+		printf("¶ÓÁĞÖĞÎŞÔªËØ£¡\n");
 		exit(0);
 	}
 	Qptr p = q->front->next;
@@ -310,7 +310,7 @@ void DetQueue(LinkQueue *q, int &e)
 	}
 	free(p);
 }
-//æ£€éªŒæ˜¯å¦ä¸ºç©º
+//¼ìÑéÊÇ·ñÎª¿Õ
 int QueueEmpty(LinkQueue *q)
 {
 	if (q->front == q->rear)
@@ -319,7 +319,7 @@ int QueueEmpty(LinkQueue *q)
 		return 1;
 }
 
-//å¹¿åº¦ä¼˜å…ˆéå†
+//¹ã¶ÈÓÅÏÈ±éÀú
 void BFSTraverse(AdjMatrix *G, int tag)
 {
 	int k;
@@ -328,7 +328,7 @@ void BFSTraverse(AdjMatrix *G, int tag)
 	InitQueue(&Q);
 	for (int i = 0; i < G->e; i++)
 	{
-		visited[i] = 0;//åˆå§‹åŒ–æ ‡è®°æ•°ç»„
+		visited[i] = 0;//³õÊ¼»¯±ê¼ÇÊı×é
 	}
 	for (int i = 0; i < G->e; i++)
 	{
@@ -356,7 +356,7 @@ void BFSTraverse(AdjMatrix *G, int tag)
 	}
 }
 
-//æŸ¥æ‰¾é¡¶ç‚¹ åˆ¤æ–­æ˜¯å¦å­˜åœ¨ å­˜åœ¨åˆ™åˆ é™¤é¡¶ç‚¹å¹¶åšDFSéå† ä¸å­˜åœ¨åˆ™è¾“å‡ºç»“æœ
+//²éÕÒ¶¥µã ÅĞ¶ÏÊÇ·ñ´æÔÚ ´æÔÚÔòÉ¾³ı¶¥µã²¢×öDFS±éÀú ²»´æÔÚÔòÊä³ö½á¹û
 void FindVertex(AdjMatrix* G, char key)
 {
     VertexNode *p = G->adjlist;
@@ -367,28 +367,28 @@ void FindVertex(AdjMatrix* G, char key)
     {
         if(p->vertex == key)
         {
-            //é¡¶ç‚¹æ•°å‡ä¸€
+            //¶¥µãÊı¼õÒ»
             G->e--;
-            //åˆ é™¤èŠ‚ç‚¹å’Œç›¸å…³ä¿¡æ¯å…ˆåˆ é™¤ç‚¹
+            //É¾³ı½ÚµãºÍÏà¹ØĞÅÏ¢ÏÈÉ¾³ıµã
             for (int i = p->tag; G->adjlist[i].vertex != 0; i++)
             {
-                //æ•°ç»„å‰ç§»
+                //Êı×éÇ°ÒÆ
                 G->adjlist[i] = G->adjlist[i+1];
                 G->adjlist[i].tag = i;
-                //ä¿®æ”¹è®¿é—®æ•°ç»„
+                //ĞŞ¸Ä·ÃÎÊÊı×é
                 for (int j = 0; j < G->e; j++)
                 {
-                    visited[j] = 0;//åˆå§‹åŒ–æ ‡è®°æ•°ç»„ä¸º0
+                    visited[j] = 0;//³õÊ¼»¯±ê¼ÇÊı×éÎª0
                 }
                 visited[i] = 1;
             }
-            printf("å·²ç»æˆåŠŸåˆ é™¤èŠ‚ç‚¹%c,ä¸‹æ ‡ä¸º%d\n", key, p->tag);
+            printf("ÒÑ¾­³É¹¦É¾³ı½Úµã%c,ÏÂ±êÎª%d\n", key, p->tag);
 
-            //é‡ç½®æŒ‡é’ˆ æŒ‡å‘å›¾çš„å¤´èŠ‚ç‚¹
+            //ÖØÖÃÖ¸Õë Ö¸ÏòÍ¼µÄÍ·½Úµã
             p = G->adjlist;
             while (p->vertex != 0)
             {
-                //å¦‚æœè¯¥é¡¶ç‚¹æ— è¾¹ç‚¹
+                //Èç¹û¸Ã¶¥µãÎŞ±ßµã
                 if(p->edgenext == NULL)
                 {
                     p++;
@@ -396,22 +396,22 @@ void FindVertex(AdjMatrix* G, char key)
                 }
                 pf=p->edgenext;
                 ps=pf->next;
-                //å½“ç¬¬ä¸€ä¸ªèŠ‚ç‚¹å°±æ˜¯éœ€è¦åˆ é™¤çš„èŠ‚ç‚¹æ—¶
+                //µ±µÚÒ»¸ö½Úµã¾ÍÊÇĞèÒªÉ¾³ıµÄ½ÚµãÊ±
                 if(pf->adjvex == key)
                 {
                     pf->next = ps->next;
-                    printf("åˆ é™¤%c---->%cè¾¹\n", p->vertex, key);
+                    printf("É¾³ı%c---->%c±ß\n", p->vertex, key);
                     free(ps);
                     p++;
                     continue;
                 }
-                //å½“ä¸­é—´èŠ‚ç‚¹éœ€è¦è¢«åˆ é™¤æ—¶
+                //µ±ÖĞ¼ä½ÚµãĞèÒª±»É¾³ıÊ±
                 while (ps != NULL)
                 {
                     if(ps->adjvex == key)
                     {
                         pf->next = ps->next;
-                        printf("åˆ é™¤%c---->%cè¾¹\n", p->vertex, key);
+                        printf("É¾³ı%c---->%c±ß\n", p->vertex, key);
                         free(ps);
                         break;
                     }
@@ -421,7 +421,7 @@ void FindVertex(AdjMatrix* G, char key)
                 p++;
                 
             }
-            //åˆ é™¤èŠ‚ç‚¹å¯¼è‡´tagæ”¹å˜
+            //É¾³ı½Úµãµ¼ÖÂtag¸Ä±ä
             p = G->adjlist;
             VertexNode *v = p;
             int tag = 0;
@@ -446,13 +446,13 @@ void FindVertex(AdjMatrix* G, char key)
                 tag++;
                 p++;
             }
-            //åšDFSéå†
+            //×öDFS±éÀú
 
             DFSTraverse(G, 0, true);
             return;
         }
         p++;
     }
-    printf("æ²¡æœ‰æ‰¾åˆ°èŠ‚ç‚¹%cå“¦",key);
+    printf("Ã»ÓĞÕÒµ½½Úµã%cÅ¶",key);
     return;
 }

@@ -122,11 +122,11 @@ bitree findNode(bitree bt, int value, int operation, int* deep, int* num, int* o
         //递归查找
         if (value < bt->data)
         {
-            deep++;
+            *deep+=1;
             bt->lchild = findNode(bt->lchild,value,1,deep,num,obt,position);
         } else
         {
-            deep++;
+            *deep+=1;
             bt->rchild = findNode(bt->rchild,value,1,deep,num,obt,position);
         }
     } else if (operation == 0)
@@ -228,6 +228,9 @@ int main() {
     scanf("%d",&value);
     bt = findNode(bt,value,1, q, p, pobt, t);
     //中序遍历
+    deep = 1;
+    num = 0;
+    nodes = 0;
     inorderTraverse(bt, p, q, u);
     //查找成功下的平均长度
     if (nodes == 0)
